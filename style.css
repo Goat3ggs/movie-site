@@ -1,0 +1,48 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+* {
+    font: inherit;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    margin: 2rem 0;
+}
+
+.footer {
+    text-align: center;
+    background-color: rgb(245, 245, 245);
+    padding: 2rem 0;
+    margin-top: auto;
+}
+
+.contact-title {
+    margin: 2rem 0 0;
+    font-weight: bold;
+    font-size: 3rem;
+}
+
+.contact-text {
+    margin: 3rem 0 0.5rem;
+    font-weight: 700;
+    font-size: 1.4em;
+}
+
+input[type="text"] {
+    font-size: 1.2rem;
+}
+
+.movie-info-bold {
+    font-weight: bold;
+}
+
+.customIndent {
+    padding-left: 45px;
+}
