@@ -20,7 +20,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
+            <a class="nav-link active" aria-current="page" href="./index.php">Home</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="./movies.php">Movies</a>
@@ -64,22 +64,22 @@
       // Pentru a adauga html in functie trebuie sa inchidem codul de php astfel - dupa acolada deschisa inchidem/ deschidem inainte de acolada inchisa;
       // 3. Generaza ID unic folosind fct. "uniqid()";
 
-      $i = [];
+      $i = 1;
 
-      foreach ($movies as $i) { ?>
-        <div class="col-md-4 mb-4" id="<?php echo uniqid() ?>">
+      foreach ($movies as $movie) { ?>
+
+        <div class="col-md-4 mb-4" id="<?php echo $i ?>">
           <div class="card">
-            <img src="<?php echo $i["image"] ?>" class="card-img-top" alt="titanic image">
+            <img src="<?php echo $movie["image"] ?>" class="card-img-top" alt="titanic image">
             <div class="card-body">
-              <h5 class="card-title"><?php echo $i["title"] ?></h5>
-              <p class="card-text"><?php echo $i["info"] . "..."  ?></p>
+              <h5 class="card-title"><?php echo $movie["title"] ?></h5>
+              <p class="card-text"><?php echo $movie["info"] . "..."  ?></p>
               <a href="./movie-1.php" class="btn btn-primary">Read more</a>
             </div>
           </div>
         </div>
-      <?php
-      }
-      ?>
+      <?php $i++;
+      } ?>
 
     </div>
   </div>
