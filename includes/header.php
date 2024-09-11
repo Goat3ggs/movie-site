@@ -12,43 +12,78 @@
 <body>
 
     <?php
+    $navbar = array(
+        array(
+            "nume" => "Home",
+            "link" => "index.php"
+        ),
+        array(
+            "nume" => "Movies",
+            "link" => "movies.php"
+        ),
+        array(
+            "nume" => "Contact",
+            "link" => "contact.php"
+        ),
+    );
+
     define("LOGO", "GS");
+
+    // Obtine fisierul curent folosind basename
+    $current_page = basename($_SERVER['PHP_SELF']);
     ?>
+
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="../index.php"><?php echo LOGO ?></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <a
+                class="navbar-brand"
+                href="/index.php"><?php echo LOGO ?>
+            </a>
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="../index.php">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../movies.php">Movies</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Contact
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
-                    </li>
-                </ul>
+            <?php foreach ($navbar as $nav) {
+                // Verificam daca pagina coincide cu link-ul din meniu
+                $active_class = ($current_page == $nav["link"]) ? "active" : "";
+            ?>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a
+                                class="nav-link <?php echo $active_class; ?>"
+                                aria-current="page"
+                                href="<?php echo $nav["link"] ?>">
+                                <?php echo $nav["nume"] ?>
+                            </a>
+                        </li>
+                    </ul>
+                <?php } ?>
                 <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
+                    <input
+                        class="form-control me-2"
+                        type="search"
+                        placeholder="Search"
+                        aria-label="Search">
+                    <button
+                        class="btn btn-outline-success"
+                        type="submit">
+                        Search
+                    </button>
                 </form>
-            </div>
+                </div>
         </div>
     </nav>
+
+
+
+
 
     <div class="container">
 
@@ -74,5 +109,7 @@
                 "info" => "In this sequel set eleven years after \"The Terminator\", young John Connor"
             )
         );
+
+
 
         include("functions.php");
