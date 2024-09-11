@@ -74,3 +74,5 @@
                 "info" => "In this sequel set eleven years after \"The Terminator\", young John Connor"
             )
         );
+
+        include("functions.php");

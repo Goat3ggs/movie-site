@@ -9,7 +9,7 @@
     <h2>1991</h2>
     <p>In this sequel set eleven years after "The Terminator," young John Connor (Edward Furlong), the key to civilization's victory over a future robot uprising, is the target of the shape-shifting T-1000 (Robert Patrick), a Terminator sent from the future to kill him. Another Terminator, the revamped T-800 (Arnold Schwarzenegger), has been sent back to protect the boy. As John and his mother (Linda Hamilton) go on the run with the T-800, the boy forms an unexpected bond with the robot.</p>
     <p>Directed By: <span class="movie-info-bold">James Cameron</span></p>
-    <p>Runtime: <span class="movie-info-bold">136 minutes</span></p>
+    <p>Runtime: <span class="movie-info-bold"><?php echo runtime_prettier(136) ?></span></p>
     <h4>Cast:</h4>
     <ul class="customIndent">
       <li>Arnold Schwarzenegger</li>
