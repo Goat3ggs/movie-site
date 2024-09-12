@@ -13,18 +13,9 @@
 
     <?php
     $navbar = array(
-        array(
-            "nume" => "Home",
-            "link" => "index.php"
-        ),
-        array(
-            "nume" => "Movies",
-            "link" => "movies.php"
-        ),
-        array(
-            "nume" => "Contact",
-            "link" => "contact.php"
-        ),
+        array("nume" => "Home", "link" => "index.php"),
+        array("nume" => "Movies", "link" => "movies.php"),
+        array("nume" => "Contact", "link" => "contact.php"),
     );
 
     define("LOGO", "GS");
@@ -51,7 +42,7 @@
             </button>
             <?php foreach ($navbar as $nav) {
                 // Verificam daca pagina coincide cu link-ul din meniu
-                $active_class = ($current_page == $nav["link"]) ? "active" : "";
+                $active_class = ($current_page === basename($nav["link"])) ? "active" : "";
             ?>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -72,28 +63,34 @@
     <div class="container">
 
         <?php
+        // creaza if si incapsuleaza array-ul de $movies
+        // verifica ince fisier te afli in momentul de fata.
+        // DACA esti in index.php/contact.php NU incarca array-ul
+        // Obtine fisierul curent folosind basename
+        // $current_page = basename($_SERVER['PHP_SELF']);
 
-        $movies = array(
-            array(
-                "id" => 1,
-                "image" => "https://m.media-amazon.com/images/I/71uoicxpqoS._AC_UF1000,1000_QL80_.jpg",
-                "title" => "Titanic",
-                "info" => "James Cameron's \"Titanic\" is an epic, action-packed romance set against the ill-fated maiden voyage of the R.M.S"
-            ),
-            array(
-                "id" => 2,
-                "image" => "https://image.tmdb.org/t/p/original/unbrtK8zEjPANvNkbwhjpSxYWzN.jpg",
-                "title" => "Avatar",
-                "info" => "James Cameron's Academy Award®-winning 2009 epic adventure \"Avatar\", returns to theaters September 23"
-            ),
-            array(
-                "id" => 3,
-                "image" => "https://m.media-amazon.com/images/M/MV5BMGU2NzRmZjUtOGUxYS00ZjdjLWEwZWItY2NlM2JhNjkxNTFmXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_.jpg",
-                "title" => "Terminator 2: Judgment Days",
-                "info" => "In this sequel set eleven years after \"The Terminator\", young John Connor"
-            )
-        );
-
-
-
-        include("functions.php");
+        if ($current_page === "index.php" || $current_page === "contact.php") {
+            echo "<h4>Welcome to our site! Please visit the Movie page for more information.</h4>";
+        } else {
+            $movies = array(
+                array(
+                    "id" => 1,
+                    "image" => "https://m.media-amazon.com/images/I/71uoicxpqoS._AC_UF1000,1000_QL80_.jpg",
+                    "title" => "Titanic",
+                    "info" => "James Cameron's \"Titanic\" is an epic, action-packed romance set against the ill-fated maiden voyage of the R.M.S"
+                ),
+                array(
+                    "id" => 2,
+                    "image" => "https://image.tmdb.org/t/p/original/unbrtK8zEjPANvNkbwhjpSxYWzN.jpg",
+                    "title" => "Avatar",
+                    "info" => "James Cameron's Academy Award®-winning 2009 epic adventure \"Avatar\", returns to theaters September 23"
+                ),
+                array(
+                    "id" => 3,
+                    "image" => "https://m.media-amazon.com/images/M/MV5BMGU2NzRmZjUtOGUxYS00ZjdjLWEwZWItY2NlM2JhNjkxNTFmXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_.jpg",
+                    "title" => "Terminator 2: Judgment Days",
+                    "info" => "In this sequel set eleven years after \"The Terminator\", young John Connor"
+                )
+            );
+            include("functions.php");
+        }
