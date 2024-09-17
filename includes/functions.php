@@ -5,9 +5,14 @@
 
 function runtime_prettier($min)
 {
-    return date('G \h\o\u\r i', mktime(0, $min)) . " minutes";
+    if ($min > 60) {
+        return date('G\h\ i', mktime(0, $min)) . "m";
+    } else {
+        return $min . "m";
+    }
 }
 
+// Check if movie is old function
 function check_old_movie($year)
 {
     $yearDiff = date('Y') - $year;
@@ -17,5 +22,24 @@ function check_old_movie($year)
     } else {
         echo '<span class="badge rounded-pill  text-bg-warning">Old movie: ' . $yearDiff . ' years</span>';
         return $yearDiff;
+    }
+}
+
+// Get current date and greet function
+
+
+function greeting()
+{
+    date_default_timezone_set('Europe/Bucharest');
+
+    $date = date("H");
+    if ($date >= 1 && $date <= 10) {
+        echo "<span>Good Morning!</span>";
+    } else if ($date > 10 && $date < 17) {
+        echo "<span>Good Afternoon!</span>";
+    } else if ($date >= 17 && $date < 21) {
+        echo "<span>Good Evening!</span>";
+    } else {
+        echo "<span>Good Night!</span>";
     }
 }
