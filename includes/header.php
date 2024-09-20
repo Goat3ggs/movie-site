@@ -63,8 +63,7 @@
     </nav>
     <div class="container">
 
-        <?php
-        // creaza if si incapsuleaza array-ul de $movies
+        <?php        // creaza if si incapsuleaza array-ul de $movies
         // verifica ince fisier te afli in momentul de fata.
         // DACA esti in index.php/contact.php NU incarca array-ul
         // Obtine fisierul curent folosind basename
@@ -73,7 +72,7 @@
         if ($current_page === "index.php" || $current_page === "contact.php") {
             echo "<h4>Welcome to our site! Please visit the Movie page for more information.</h4>";
         } else {
-            $movies = json_decode(file_get_contents('/assets/movies-list-db.json'), true)['movies'];
+            $movies = json_decode(file_get_contents("assets/movies-list-db.json"), true)['movies'];
         }
 
         include("functions.php");
