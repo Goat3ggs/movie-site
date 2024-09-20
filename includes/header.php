@@ -22,6 +22,7 @@
 
     // Obtine fisierul curent folosind basename
     $current_page = basename($_SERVER['PHP_SELF']);
+    // var_dump($current_page)
     ?>
 
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -68,7 +69,7 @@
         // DACA esti in index.php/contact.php NU incarca array-ul
         // Obtine fisierul curent folosind basename
         // $current_page = basename($_SERVER['PHP_SELF']);
-
+        // chack for the function in_array
         if ($current_page === "index.php" || $current_page === "contact.php") {
             echo "<h4>Welcome to our site! Please visit the Movie page for more information.</h4>";
         } else {

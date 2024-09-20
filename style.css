@@ -46,3 +46,7 @@ input[type="text"] {
 .customIndent {
     padding-left: 45px;
 }
+
+.active {
+    color: red !important; 
+}

@@ -15,8 +15,8 @@
   foreach ($movies as $movie) {
     $i = $movie["id"]; ?>
 
-    <div class="col-md-4 mb-4" id="<?php echo $i ?>">
-      <?php include("./includes/archive-movie.php") ?>
+    <div class="col-md-4 mb-4" id="movie-<?php echo $i ?>">
+      <?php require("./includes/archive-movie.php") ?>
     </div>
   <?php $i++;
   } ?>

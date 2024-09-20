@@ -25,13 +25,12 @@ function check_old_movie($year)
     }
 }
 
-// Get current date and greet function
-
-
+// Get current date then greet function
 function greeting()
 {
     date_default_timezone_set('Europe/Bucharest');
 
+    // date("H") i
     $date = date("H");
     if ($date >= 1 && $date <= 10) {
         echo "<span>Good Morning!</span>";
