@@ -73,26 +73,7 @@
         if ($current_page === "index.php" || $current_page === "contact.php") {
             echo "<h4>Welcome to our site! Please visit the Movie page for more information.</h4>";
         } else {
-            $movies = array(
-                array(
-                    "id" => 1,
-                    "image" => "https://m.media-amazon.com/images/I/71uoicxpqoS._AC_UF1000,1000_QL80_.jpg",
-                    "title" => "Titanic",
-                    "info" => "James Cameron's \"Titanic\" is an epic, action-packed romance set against the ill-fated maiden voyage of the R.M.S"
-                ),
-                array(
-                    "id" => 2,
-                    "image" => "https://image.tmdb.org/t/p/original/unbrtK8zEjPANvNkbwhjpSxYWzN.jpg",
-                    "title" => "Avatar",
-                    "info" => "James Cameron's Academy Award®-winning 2009 epic adventure \"Avatar\", returns to theaters September 23"
-                ),
-                array(
-                    "id" => 3,
-                    "image" => "https://m.media-amazon.com/images/M/MV5BMGU2NzRmZjUtOGUxYS00ZjdjLWEwZWItY2NlM2JhNjkxNTFmXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_.jpg",
-                    "title" => "Terminator 2: Judgment Days",
-                    "info" => "In this sequel set eleven years after \"The Terminator\", young John Connor"
-                )
-            );
+            $movies = json_decode(file_get_contents('/assets/movies-list-db.json'), true)['movies'];
         }
 
         include("functions.php");
