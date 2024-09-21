@@ -61,7 +61,7 @@ if (!empty($_GET) && isset($_GET["movie_id"])) {
                         $arr = $movie["genres"];
                         $gens = "";
                         foreach ($arr as $gen) {
-                            $gens =  $gens . $gen . ", ";
+                            $gens = $gens . $gen . ", ";
                         }
                         echo rtrim($gens, ", ");
                         ?></p> -->
@@ -83,13 +83,16 @@ if (!empty($_GET) && isset($_GET["movie_id"])) {
             </div>
         </div>
 
-<?php
-    } else {
-        echo "Film not found.";
-    }
-} else {
-    echo "Invalid movie ID.";
-}
+    <?php
+    } else { ?>
+        <h1>Film not found...Go back</h1>
+        <a href="movies.php" class="btn btn-primary">Movie Page</a>
+
+    <?php }
+} else { ?>
+    <h1>Invalid movie ID...Go back</h1>
+    <a href="movies.php" class="btn btn-primary">Movie Page</a>
+<?php }
 ?>
 
 <?php require_once('./includes/footer.php') ?>
