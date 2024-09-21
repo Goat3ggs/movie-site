@@ -52,6 +52,34 @@ if (!empty($_GET) && isset($_GET["movie_id"])) {
                     }
                     ?>
                 </ul>
+                <h4>Genres:</h4>
+                <!-- Varianta 1 -->
+                <!-- <p><?php echo implode(", ", $movie["genres"]) ?></p> -->
+
+                <!-- Varianta 2 -->
+                <!-- <p><?php
+                        $arr = $movie["genres"];
+                        $gens = "";
+                        foreach ($arr as $gen) {
+                            $gens =  $gens . $gen . ", ";
+                        }
+                        echo rtrim($gens, ", ");
+                        ?></p> -->
+
+                <!-- Varianta 3 -->
+                <p>
+                    <?php
+                    $arr = $movie["genres"];
+                    $first_genre = $movie['genres'][0];
+                    $gens = "";
+                    foreach ($arr as $gen) {
+                        if ($gen !== $first_genre) {
+                            $gens = $gens . ", " . $gen;
+                        }
+                    }
+                    echo $first_genre . $gens;
+                    ?>
+                </p>
             </div>
         </div>
 
