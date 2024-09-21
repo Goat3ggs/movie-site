@@ -2,12 +2,19 @@
 
 <?php
 
-/* Primul "if" verifica:
+/* 
+Primul "if" verifica:
     1. daca "movie_id" exista,
     2. iar daca exista verifica daca NU este gol:
         - in cazul in care NU este gol, defineste variabila
         $movie_id care sa tina id-ul fiecarui film luat prin metoda GET.
-In interiorul if-ului avem variabila $filtered_movies
+
+In interiorul if-ului avem variabila $filtered_movies:
+    Aceasta ia ca si parametrii:
+    1. array => in cazul nostru array-ul de filme "$movies";
+    2. callback function => o functie anonima cu parametrul "$movie";
+    se foloseste de variabila "$movie_id" (look for "Inheriting variables from the parent scope"):
+        - folosim keyword-ul "use" pentru a "mosteni" variabila setata in domeniul parental AKA parent scope.
 */
 if (!empty($_GET) && isset($_GET["movie_id"])) {
     // Extrage ID-ul din URL
@@ -36,10 +43,14 @@ if (!empty($_GET) && isset($_GET["movie_id"])) {
                 <p>Runtime: <span class="movie-info-bold"><?php echo runtime_prettier($movie["runtime"]) ?></span></p>
                 <h4>Cast:</h4>
                 <ul class="customIndent">
-                    <li>Leonardo DiCaprio</li>
-                    <li>Kate Winslet</li>
-                    <li>Billy Zane</li>
-                    <li>Kathy Bates</li>
+                    <?php
+                    // in array actorii sunt listati sub forma de "string", de aceea trebuie sa folosim explode ca o modalitate de a-i separa, inlaturand virgula
+                    $actors = explode(",", $movie["actors"]);
+
+                    foreach ($actors as $actor) {
+                        echo "<li>$actor</li>";
+                    }
+                    ?>
                 </ul>
             </div>
         </div>
