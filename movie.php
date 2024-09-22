@@ -85,12 +85,12 @@ if (!empty($_GET) && isset($_GET["movie_id"])) {
 
     <?php
     } else { ?>
-        <h1>Film not found...Go back</h1>
+        <h2>Film not found...Go back</h2>
         <a href="movies.php" class="btn btn-primary">Movie Page</a>
 
     <?php }
 } else { ?>
-    <h1>Invalid movie ID...Go back</h1>
+    <h2>Invalid movie ID...Go back</h2>
     <a href="movies.php" class="btn btn-primary">Movie Page</a>
 <?php }
 ?>
