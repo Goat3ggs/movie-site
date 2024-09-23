@@ -27,7 +27,7 @@ if (!empty($_GET) && isset($_GET["search"])) {
             echo "</div>";
         } else {
             // Dacă nu găsim niciun film potrivit
-            echo "<p>No movies found with the title <b></b>.</p>";
+            echo "<p>No movies found with the title.</p>";
         }
     } ?>
 <?php } else { ?>

@@ -15,6 +15,7 @@
     $navbar = array(
         array("nume" => "Home", "link" => "index.php"),
         array("nume" => "Movies", "link" => "movies.php"),
+        array("nume" => "Genres", "link" => "genres.php"),
         array("nume" => "Contact", "link" => "contact.php"),
     );
 
