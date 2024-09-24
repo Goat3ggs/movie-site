@@ -3,14 +3,30 @@
 // mktime(hours, minutes, seconds); 
 // you can use all three parameters or, in this case, only two.
 
-function runtime_prettier($min)
+function runtime_prettier($movie_length = 0)
 {
-    if ($min > 60) {
-        return date('G\h\ i', mktime(0, $min)) . "m";
+    if ($movie_length == 0 || !is_numeric($movie_length)) {
+        return "No runtime data";
+    } else if ($movie_length == 1) {
+        return $movie_length . " minute";
+    } else if ($movie_length > 1 && $movie_length < 60) {
+        return $movie_length . "minutes";
     } else {
-        return $min . "m";
+        $hours = floor($movie_length / 60);
+        $minutes = $movie_length % 60;
+
+        return $hours . (($hours == 1) ? ' hour ' : ' hours ') . $minutes . (($minutes == 1) ? ' minute ' : ' minutes ');
     }
 }
+
+// function runtime_prettier($min)
+// {
+//     if ($min > 60) {
+//         return date('G\h\ i', mktime(0, $min)) . "m";
+//     } else {
+//         return $min . "m";
+//     }
+// }
 
 // Check if movie is old function
 function check_old_movie($year)
