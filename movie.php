@@ -33,14 +33,17 @@ if (!empty($_GET) && isset($_GET["movie_id"])) {
 ?>
         <h1><?php echo $movie["title"] ?></h1>
         <div class="row">
-            <div class="col-3">
-                <img src="<?php echo $movie["posterUrl"] ?>" alt="poster for <?php echo $movie["title"] ?>" class="card-img-top">
+            <div class="col-md-4 col-lg-3">
+                <img
+                    class="card-img-top"
+                    src="<?php echo $movie["posterUrl"] ?>"
+                    alt="poster for <?php echo $movie["title"] ?>" />
             </div>
-            <div class="col-9">
+            <div class="col-md-8 col-lg-9">
                 <h2><?php echo $movie["year"] ?> <?php check_old_movie($movie["year"]) ?> </h2>
-                <p><?php echo $movie["plot"] ?></p>
-                <p>Directed By: <span class="movie-info-bold"><?php echo $movie["director"] ?></span></p>
-                <p>Runtime: <span class="movie-info-bold"><?php echo runtime_prettier($movie["runtime"]) ?></span></p>
+                <p class="description mb-3"><?php echo $movie["plot"] ?></p>
+                <p class="mb-3">Directed By: <span class="movie-info-bold"><?php echo $movie["director"] ?></span></p>
+                <p class="mb-3">Runtime: <span class="movie-info-bold"><?php echo runtime_prettier($movie["runtime"]) ?></span></p>
                 <h4>Cast:</h4>
                 <ul class="customIndent">
                     <?php

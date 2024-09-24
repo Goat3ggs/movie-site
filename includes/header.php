@@ -70,10 +70,13 @@
         // Obtine fisierul curent folosind basename
         // $current_page = basename($_SERVER['PHP_SELF']);
         // chack for the function in_array
-        if ($current_page === "index.php" || $current_page === "contact.php") {
+        if ($current_page === "index.php" || $current_page === "contact.php" || $current_page === "genres.php") {
             echo "<h4>Welcome to our site! Please visit the Movie page for more information.</h4>";
         } else {
             $movies = json_decode(file_get_contents("assets/movies-list-db.json"), true)['movies'];
         }
+
+        $genres = json_decode(file_get_contents("./assets/movies-list-db.json"), true)["genres"];
+
 
         include("functions.php");

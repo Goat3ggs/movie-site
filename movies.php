@@ -27,9 +27,12 @@ if (isset($_GET['genre'])) {
 
   <?php
   // Afișăm filmele filtrate sau toate filmele
-  if (isset($filteredMovies) && !empty($filteredMovies)) {
+  if (
+    isset($filteredMovies) &&
+    !empty($filteredMovies)
+  ) {
     foreach ($filteredMovies as $movie) { ?>
-      <div class="col-md-4 mb-4" id="movie-<?php echo $movie["id"]; ?>">
+      <div class="col-12 col-md-6 col-lg-4 mb-4" id="movie-<?php echo $movie["id"]; ?>">
         <?php require("./includes/archive-movie.php"); ?>
       </div>
     <?php }

@@ -1,5 +1,7 @@
 <div class="card">
-    <img src="<?php echo $movie["posterUrl"] ?>" class="card-img-top" alt="titanic image">
+    <img
+        class="card-img-top movie-poster"
+        src="<?php echo $movie["posterUrl"] ?>" alt="<?php echo $movie['title'] ?> image">
     <div class="card-body">
         <h5 class="card-title"><?php echo $movie["title"] ?></h5>
         <p class="card-text">

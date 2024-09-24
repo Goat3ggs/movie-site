@@ -1,15 +1,17 @@
 <?php require_once('./includes/header.php') ?>
 
-
+<h1>Genres</h1>
 <?php
-$genres = json_decode(file_get_contents("./assets/movies-list-db.json"), true)["genres"];
 ?>
 
-<div class="d-flex gap-2 justify-content-center py-5">
+<div class="row">
     <?php foreach ($genres as $gen) { ?>
-        <a href="movies.php?genre=<?php echo urlencode($gen); ?>">
-            <span class="badge bg-primary-subtle border border-primary-subtle text-primary-emphasis rounded-pill"><?php echo $gen ?></span>
-        </a>
+        <div class="col-12 col-md-6 col-lg-4 mb-4">
+            <a href="movies.php?genre=<?php echo $gen ?>" class="btn btn-outline-primary d-block h-100 d-flex align-items-center justify-content-center rounded-pill">
+                <?php echo $gen ?>
+            </a>
+        </div>
+
     <?php } ?>
 </div>
 
