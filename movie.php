@@ -1,21 +1,5 @@
-<?php
-// example
-// $vizite = 0;
-// if(isset($_COOKIE["vizite"])) {
-//     $vizite = $_COOKIE["vizite"];
-// }
-
-// setcookie("vizite", $vizite, time()+60*60*24*365);
-?>
-
-<?php require_once('./includes/header.php'); ?>
-
-<!-- Ai vizitat aceasta pagina de <?php echo $_COOKIE["vizite"]?> ori. -->
 
 <?php
-// Verificam daca s-a trimis formularul si preluam actiunea:
-$is_already_favorite = false;
-
 
 /* 
 Primul "if" verifica:
@@ -32,26 +16,57 @@ In interiorul if-ului avem variabila $filtered_movies:
         - folosim keyword-ul "use" pentru a "mosteni" variabila setata in domeniul parental AKA parent scope.
 */
 
-// Verificăm dacă s-a trimis formularul și preluăm acțiunea
-
+// Verificăm dacă s-a trimis formularul și preluăm acțiune
 $is_already_favorite = false; // Simulăm că inițial filmul nu este în favorite
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST["favorite"])) {
-    $is_favorite = intval($_POST["favorite"]); // 1 pentru adaugare, 0 pentru stergere
 
-    // Actualizăm starea variabilei după trimiterea formularului
-    if ($is_favorite === 1) {
-        $is_already_favorite = true; // Filmul e in favorite
-        echo "<p>Movie was added to favorite.</p>";
-    } else {
-        $is_already_favorite = false; // Filmul e sters din favorite
-        echo "<p>Movie was removed to favorite.</p>";
-    }
-}
 
 if (!empty($_GET) && isset($_GET["movie_id"])) {
     // Extrage ID-ul din URL
     $movie_id = intval($_GET["movie_id"]);
+
+    // Verificam daca exista cooki-ul "keep_fav_movies"
+    $fav_movies = [];
+    if (isset($_COOKIE["keep_fav_movies"])) {
+        // Preluam ID-urle filmelor existente din cookie si le transformam in array
+        $fav_movies = json_decode($_COOKIE["keep_fav_movies"], true);
+        if (!is_array($fav_movies)) {
+            $fav_movies = []; // In caz ca exista o eroare in cooki, reinitializam array-ul
+        }
+    }
+
+    // Verificam daca filmul este deja in favorite
+    $is_already_favorite = in_array($movie_id, $fav_movies);
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST["favorite"])) {
+        $is_favorite = intval($_POST["favorite"]); // 1 pentru adaugare, 0 pentru stergere
+    
+        // Actualizăm starea variabilei după trimiterea formularului
+        if ($is_favorite === 1) {
+            // Daca filmul nu este deja la favorite, il adaugam
+            if (!$is_already_favorite) {
+                $fav_movies[] = $movie_id;
+            }
+        } else {
+            // Daca filmul este deja in favorite si vrem sa-l stergem
+            if (($key = array_search($movie_id, $fav_movies)) !== false) {
+                unset($fav_movies[$key]); // Stergem filmul din array
+            }
+        }
+
+        // Salvam ID-urile filmelor inapoi in cookie, convertind array-ul in JSON
+        setcookie("keep_fav_movies", json_encode($fav_movies), time() + 86400 * 365);
+
+        // Redirect pentru a preveni re-postarea formularului
+        header("Location: movie.php?movie_id=$movie_id");
+        exit;
+    }
+
+    // Schimbam textul butonului și valoarea în funcție de starea filmului
+    $button_text = $is_already_favorite ? "Remove from Favorite" : "Add to Favorite";
+    $favorite_value = $is_already_favorite ? 0 : 1;
+
+    require_once('./includes/header.php'); 
 
     // Filtrăm array-ul $movies pentru a găsi filmul care are ID-ul egal cu $movie_id
     $filtered_movies = array_filter($movies, function ($movie) use ($movie_id) {
@@ -63,9 +78,7 @@ if (!empty($_GET) && isset($_GET["movie_id"])) {
 
     // Verificăm dacă există filmul
     if ($movie) {
-        // Schimbam textul butonului și valoarea în funcție de starea filmului
-        $button_text = $is_already_favorite ? "Remove from Favorite" : "Add to Favorite";
-        $favorite_value = $is_already_favorite ? 0 : 1;
+        
 ?>
         <div class="flex">
             <h1><?php echo $movie["title"] ?></h1>
@@ -132,12 +145,12 @@ if (!empty($_GET) && isset($_GET["movie_id"])) {
             </div>
         </div>
 
-    <?php
+<?php
     } else { ?>
         <h2>Film not found...Go back</h2>
         <a href="movies.php" class="btn btn-primary">Movie Page</a>
 
-    <?php }
+<?php }
 } else { ?>
     <h2>Invalid movie ID...Go back</h2>
     <a href="movies.php" class="btn btn-primary">Movie Page</a>
