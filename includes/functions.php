@@ -58,3 +58,31 @@ function greeting()
         echo "<span>Good Night!</span>";
     }
 }
+
+
+// Functie pentru citirea fisierului JSON
+function get_movie_favorites() {
+    global $json_file_path;
+
+    // Daca fisierul nu exista, returnam un array gol
+    if (!file_exists($json_file_path)) {
+        return [];
+    }
+
+    // Citim continutul fisierului
+    $json_data = file_get_contents($json_file_path);
+
+    // Decodam continutul JSON intr-un array PHP
+    return json_decode($json_data, true);
+}
+
+// Functie pentru salvarea modificarilor in fisierului JSON
+function save_movie_favorites($data) {
+    global $json_file_path;
+
+    // Codificam array-ul PHP intr-un strin JSON
+    $json_data = json_encode($data, JSON_PRETTY_PRINT);
+
+    // Scrie stringuil JSON in fisier
+    file_put_contents($json_file_path, $json_data);
+}

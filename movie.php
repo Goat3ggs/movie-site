@@ -1,29 +1,20 @@
-
 <?php
+// Calea catre fisierul JSON 
+$json_file_path = "./assets/movie-favorites.json";
 
-/* 
-Primul "if" verifica:
-    1. daca "movie_id" exista,
-    2. iar daca exista verifica daca NU este gol:
-        - in cazul in care NU este gol, defineste variabila
-        $movie_id care sa tina id-ul fiecarui film luat prin metoda GET.
+require_once("./includes/functions.php");
 
-In interiorul if-ului avem variabila $filtered_movies:
-    Aceasta ia ca si parametrii:
-    1. array => in cazul nostru array-ul de filme "$movies";
-    2. callback function => o functie anonima cu parametrul "$movie";
-    se foloseste de variabila "$movie_id" (look for "Inheriting variables from the parent scope"):
-        - folosim keyword-ul "use" pentru a "mosteni" variabila setata in domeniul parental AKA parent scope.
-*/
 
 // Verificăm dacă s-a trimis formularul și preluăm acțiune
-$is_already_favorite = false; // Simulăm că inițial filmul nu este în favorite
-
-
-
 if (!empty($_GET) && isset($_GET["movie_id"])) {
     // Extrage ID-ul din URL
     $movie_id = intval($_GET["movie_id"]);
+
+    // Citim continutul fisierului JSON
+    $favorites_data = get_movie_favorites();
+
+    // Verificam daca ID-ul filmului exista in fisiser
+    $favorites_count = isset($favorites_data[$movie_id]) ? $favorites_data[$movie_id] : 0;
 
     // Verificam daca exista cooki-ul "keep_fav_movies"
     $fav_movies = [];
@@ -38,58 +29,77 @@ if (!empty($_GET) && isset($_GET["movie_id"])) {
     // Verificam daca filmul este deja in favorite
     $is_already_favorite = in_array($movie_id, $fav_movies);
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST["favorite"])) {
-        $is_favorite = intval($_POST["favorite"]); // 1 pentru adaugare, 0 pentru stergere
-    
-        // Actualizăm starea variabilei după trimiterea formularului
-        if ($is_favorite === 1) {
-            // Daca filmul nu este deja la favorite, il adaugam
-            if (!$is_already_favorite) {
-                $fav_movies[] = $movie_id;
-            }
+  // Verificam daca formularul a fost trimis
+  if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST["favorite"])) {
+    $is_favorite = intval($_POST["favorite"]); // 1 pentru adaugare, 0 pentru stergere
+
+    // Daca adaugam filmul la favorite
+    if ($is_favorite === 1) {
+        // Incrementeaza numarul de adaugari la favorite pentru acest film
+        if (isset($favorites_data[$movie_id])) {
+            $favorites_data[$movie_id]++;
         } else {
-            // Daca filmul este deja in favorite si vrem sa-l stergem
-            if (($key = array_search($movie_id, $fav_movies)) !== false) {
-                unset($fav_movies[$key]); // Stergem filmul din array
-            }
+            $favorites_data[$movie_id] = 1;
         }
 
-        // Salvam ID-urile filmelor inapoi in cookie, convertind array-ul in JSON
-        setcookie("keep_fav_movies", json_encode($fav_movies), time() + 86400 * 365);
+        // Adaugam filmul la lista de favorite daca nu este deja prezent
+        if (!in_array($movie_id, $fav_movies)) {
+            $fav_movies[] = $movie_id;
+        }
+    }
+    // Daca stergem filmul din favorite
+    else if ($is_favorite === 0) {
+        if (isset($favorites_data[$movie_id]) && $favorites_data[$movie_id] > 0) {
+            $favorites_data[$movie_id]--;
+        }
 
-        // Redirect pentru a preveni re-postarea formularului
-        header("Location: movie.php?movie_id=$movie_id");
-        exit;
+        // Stergem filmul din lista de favorite
+        if (($key = array_search($movie_id, $fav_movies)) !== false) {
+            unset($fav_movies[$key]);
+        }
     }
 
-    // Schimbam textul butonului și valoarea în funcție de starea filmului
-    $button_text = $is_already_favorite ? "Remove from Favorite" : "Add to Favorite";
-    $favorite_value = $is_already_favorite ? 0 : 1;
+    // Salvam modificarile in fisierul JSON
+    save_movie_favorites($favorites_data);
 
-    require_once('./includes/header.php'); 
+    // Salvam ID-urile filmelor inapoi in cookie, convertind array-ul in JSON
+    setcookie("keep_fav_movies", json_encode($fav_movies), time() + 86400 * 365);
 
-    // Filtrăm array-ul $movies pentru a găsi filmul care are ID-ul egal cu $movie_id
-    $filtered_movies = array_filter($movies, function ($movie) use ($movie_id) {
-        return $movie['id'] === $movie_id;
-    });
+    // Redirectionam pentru a evita trimiterea accidentala a formularului la refresh
+    header("Location: " . $_SERVER['REQUEST_URI']);
+    exit();
+}
 
-    // Extragem primul rezultat din array-ul filtrat
-    $movie = reset($filtered_movies); // reset() returnează primul element din array
+// Schimbam textul butonului si valoarea in functie de starea filmului
+$button_text = $is_already_favorite ? "Remove from Favorite" : "Add to Favorite";
+$favorites_value = $is_already_favorite ? 0 : 1;
+
+// Includem header-ul
+require_once('./includes/header.php');
+
+// Filtram array-ul $movies pentru a gasi filmul care are ID-ul egal cu $movie_id
+$filtered_movies = array_filter($movies, function ($movie) use ($movie_id) {
+    return $movie['id'] === $movie_id;
+});
+
+// Extragem primul rezultat din array-ul filtrat
+$movie = reset($filtered_movies); // reset() returneaza primul element din array
+
 
     // Verificăm dacă există filmul
     if ($movie) {
-        
 ?>
         <div class="flex">
             <h1><?php echo $movie["title"] ?></h1>
             <form action="" method="POST">
-                <input type="hidden" name="favorite" value="<?php echo $favorite_value ?>">
+                <input type="hidden" name="favorite" value="<?php echo $favorites_value ?>">
                 <button class="btn btn-outline-dark" type="submit">
                     <?php echo $button_text ?>
                 </button>
+                 <!-- Afisam numarul de adaugari la favorite -->
+                 <span class="badge text-bg-secondary"><?php echo $favorites_count ?> times added</span>
             </form>
         </div>
-
 
         <div class="row">
             <div class="col-md-4 col-lg-3">

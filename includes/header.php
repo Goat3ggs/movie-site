@@ -79,4 +79,4 @@
         $genres = json_decode(file_get_contents("./assets/movies-list-db.json"), true)["genres"];
 
 
-        include("functions.php");
+        include_once("functions.php");
