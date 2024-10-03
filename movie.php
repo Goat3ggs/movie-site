@@ -1,6 +1,21 @@
+<?php
+// example
+// $vizite = 0;
+// if(isset($_COOKIE["vizite"])) {
+//     $vizite = $_COOKIE["vizite"];
+// }
+
+// setcookie("vizite", $vizite, time()+60*60*24*365);
+?>
+
 <?php require_once('./includes/header.php'); ?>
 
+<!-- Ai vizitat aceasta pagina de <?php echo $_COOKIE["vizite"]?> ori. -->
+
 <?php
+// Verificam daca s-a trimis formularul si preluam actiunea:
+$is_already_favorite = false;
+
 
 /* 
 Primul "if" verifica:
@@ -16,13 +31,31 @@ In interiorul if-ului avem variabila $filtered_movies:
     se foloseste de variabila "$movie_id" (look for "Inheriting variables from the parent scope"):
         - folosim keyword-ul "use" pentru a "mosteni" variabila setata in domeniul parental AKA parent scope.
 */
+
+// Verificăm dacă s-a trimis formularul și preluăm acțiunea
+
+$is_already_favorite = false; // Simulăm că inițial filmul nu este în favorite
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST["favorite"])) {
+    $is_favorite = intval($_POST["favorite"]); // 1 pentru adaugare, 0 pentru stergere
+
+    // Actualizăm starea variabilei după trimiterea formularului
+    if ($is_favorite === 1) {
+        $is_already_favorite = true; // Filmul e in favorite
+        echo "<p>Movie was added to favorite.</p>";
+    } else {
+        $is_already_favorite = false; // Filmul e sters din favorite
+        echo "<p>Movie was removed to favorite.</p>";
+    }
+}
+
 if (!empty($_GET) && isset($_GET["movie_id"])) {
     // Extrage ID-ul din URL
-    $movie_id = $_GET["movie_id"];
+    $movie_id = intval($_GET["movie_id"]);
 
     // Filtrăm array-ul $movies pentru a găsi filmul care are ID-ul egal cu $movie_id
     $filtered_movies = array_filter($movies, function ($movie) use ($movie_id) {
-        return $movie['id'] == $movie_id;
+        return $movie['id'] === $movie_id;
     });
 
     // Extragem primul rezultat din array-ul filtrat
@@ -30,8 +63,21 @@ if (!empty($_GET) && isset($_GET["movie_id"])) {
 
     // Verificăm dacă există filmul
     if ($movie) {
+        // Schimbam textul butonului și valoarea în funcție de starea filmului
+        $button_text = $is_already_favorite ? "Remove from Favorite" : "Add to Favorite";
+        $favorite_value = $is_already_favorite ? 0 : 1;
 ?>
-        <h1><?php echo $movie["title"] ?></h1>
+        <div class="flex">
+            <h1><?php echo $movie["title"] ?></h1>
+            <form action="" method="POST">
+                <input type="hidden" name="favorite" value="<?php echo $favorite_value ?>">
+                <button class="btn btn-outline-dark" type="submit">
+                    <?php echo $button_text ?>
+                </button>
+            </form>
+        </div>
+
+
         <div class="row">
             <div class="col-md-4 col-lg-3">
                 <img
