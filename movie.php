@@ -4,7 +4,6 @@ $json_file_path = "./assets/movie-favorites.json";
 
 require_once("./includes/functions.php");
 
-
 // Verificăm dacă s-a trimis formularul și preluăm acțiune
 if (!empty($_GET) && isset($_GET["movie_id"])) {
     // Extrage ID-ul din URL
@@ -29,61 +28,61 @@ if (!empty($_GET) && isset($_GET["movie_id"])) {
     // Verificam daca filmul este deja in favorite
     $is_already_favorite = in_array($movie_id, $fav_movies);
 
-  // Verificam daca formularul a fost trimis
-  if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST["favorite"])) {
-    $is_favorite = intval($_POST["favorite"]); // 1 pentru adaugare, 0 pentru stergere
+    // Verificam daca formularul a fost trimis
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST["favorite"])) {
+        $is_favorite = intval($_POST["favorite"]); // 1 pentru adaugare, 0 pentru stergere
 
-    // Daca adaugam filmul la favorite
-    if ($is_favorite === 1) {
-        // Incrementeaza numarul de adaugari la favorite pentru acest film
-        if (isset($favorites_data[$movie_id])) {
-            $favorites_data[$movie_id]++;
-        } else {
-            $favorites_data[$movie_id] = 1;
+        // Daca adaugam filmul la favorite
+        if ($is_favorite === 1) {
+            // Incrementeaza numarul de adaugari la favorite pentru acest film
+            if (isset($favorites_data[$movie_id])) {
+                $favorites_data[$movie_id]++;
+            } else {
+                $favorites_data[$movie_id] = 1;
+            }
+
+            // Adaugam filmul la lista de favorite daca nu este deja prezent
+            if (!in_array($movie_id, $fav_movies)) {
+                $fav_movies[] = $movie_id;
+            }
+        }
+        // Daca stergem filmul din favorite
+        else if ($is_favorite === 0) {
+            if (isset($favorites_data[$movie_id]) && $favorites_data[$movie_id] > 0) {
+                $favorites_data[$movie_id]--;
+            }
+
+            // Stergem filmul din lista de favorite
+            if (($key = array_search($movie_id, $fav_movies)) !== false) {
+                unset($fav_movies[$key]);
+            }
         }
 
-        // Adaugam filmul la lista de favorite daca nu este deja prezent
-        if (!in_array($movie_id, $fav_movies)) {
-            $fav_movies[] = $movie_id;
-        }
+        // Salvam modificarile in fisierul JSON
+        save_movie_favorites($favorites_data);
+
+        // Salvam ID-urile filmelor inapoi in cookie, convertind array-ul in JSON
+        setcookie("keep_fav_movies", json_encode($fav_movies), time() + 86400 * 365);
+
+        // Redirectionam pentru a evita trimiterea accidentala a formularului la refresh
+        header("Location: " . $_SERVER['REQUEST_URI']);
+        exit();
     }
-    // Daca stergem filmul din favorite
-    else if ($is_favorite === 0) {
-        if (isset($favorites_data[$movie_id]) && $favorites_data[$movie_id] > 0) {
-            $favorites_data[$movie_id]--;
-        }
 
-        // Stergem filmul din lista de favorite
-        if (($key = array_search($movie_id, $fav_movies)) !== false) {
-            unset($fav_movies[$key]);
-        }
-    }
+    // Schimbam textul butonului si valoarea in functie de starea filmului
+    $button_text = $is_already_favorite ? "Remove from Favorite" : "Add to Favorite";
+    $favorites_value = $is_already_favorite ? 0 : 1;
 
-    // Salvam modificarile in fisierul JSON
-    save_movie_favorites($favorites_data);
+    // Includem header-ul
+    require_once('./includes/header.php');
 
-    // Salvam ID-urile filmelor inapoi in cookie, convertind array-ul in JSON
-    setcookie("keep_fav_movies", json_encode($fav_movies), time() + 86400 * 365);
+    // Filtram array-ul $movies pentru a gasi filmul care are ID-ul egal cu $movie_id
+    $filtered_movies = array_filter($movies, function ($movie) use ($movie_id) {
+        return $movie['id'] === $movie_id;
+    });
 
-    // Redirectionam pentru a evita trimiterea accidentala a formularului la refresh
-    header("Location: " . $_SERVER['REQUEST_URI']);
-    exit();
-}
-
-// Schimbam textul butonului si valoarea in functie de starea filmului
-$button_text = $is_already_favorite ? "Remove from Favorite" : "Add to Favorite";
-$favorites_value = $is_already_favorite ? 0 : 1;
-
-// Includem header-ul
-require_once('./includes/header.php');
-
-// Filtram array-ul $movies pentru a gasi filmul care are ID-ul egal cu $movie_id
-$filtered_movies = array_filter($movies, function ($movie) use ($movie_id) {
-    return $movie['id'] === $movie_id;
-});
-
-// Extragem primul rezultat din array-ul filtrat
-$movie = reset($filtered_movies); // reset() returneaza primul element din array
+    // Extragem primul rezultat din array-ul filtrat
+    $movie = reset($filtered_movies); // reset() returneaza primul element din array
 
 
     // Verificăm dacă există filmul
@@ -96,8 +95,8 @@ $movie = reset($filtered_movies); // reset() returneaza primul element din array
                 <button class="btn btn-outline-dark" type="submit">
                     <?php echo $button_text ?>
                 </button>
-                 <!-- Afisam numarul de adaugari la favorite -->
-                 <span class="badge text-bg-secondary"><?php echo $favorites_count ?> times added</span>
+                <!-- Afisam numarul de adaugari la favorite -->
+                <span class="badge text-bg-secondary"><?php echo $favorites_count ?> times added</span>
             </form>
         </div>
 
@@ -155,12 +154,12 @@ $movie = reset($filtered_movies); // reset() returneaza primul element din array
             </div>
         </div>
 
-<?php
+    <?php
     } else { ?>
         <h2>Film not found...Go back</h2>
         <a href="movies.php" class="btn btn-primary">Movie Page</a>
 
-<?php }
+    <?php }
 } else { ?>
     <h2>Invalid movie ID...Go back</h2>
     <a href="movies.php" class="btn btn-primary">Movie Page</a>
