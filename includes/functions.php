@@ -1,5 +1,23 @@
 <?php
 
+// Connecting database
+function connectToDatabase($host = "localhost", $username = "root", $password = "root", $dbname = "local")
+{
+    $host = "localhost";
+    $username = "php-user";
+    $password = "php-password";
+    $dbname = "php-proiect";
+
+    $conn = mysqli_connect($host, $username, $password, $dbname);
+
+    if (!$conn) {
+        die("Connection failed: " . mysqli_connect_error());
+    }
+
+    return $conn;
+}
+$conn = connectToDatabase();
+echo "DB Connected successfully!";
 // mktime(hours, minutes, seconds); 
 // you can use all three parameters or, in this case, only two.
 
@@ -61,7 +79,8 @@ function greeting()
 
 
 // Functie pentru citirea fisierului JSON
-function get_movie_favorites() {
+function get_movie_favorites()
+{
     global $json_file_path;
 
     // Daca fisierul nu exista, returnam un array gol
@@ -77,7 +96,8 @@ function get_movie_favorites() {
 }
 
 // Functie pentru salvarea modificarilor in fisierului JSON
-function save_movie_favorites($data) {
+function save_movie_favorites($data)
+{
     global $json_file_path;
 
     // Codificam array-ul PHP intr-un strin JSON
