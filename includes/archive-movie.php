@@ -1,7 +1,8 @@
+<?php include_once('functions.php'); ?>
 <div class="card">
     <img
         class="card-img-top movie-poster"
-        src="<?php echo $movie["posterUrl"] ?>" alt="<?php echo $movie['title'] ?> image">
+        src="<?php echo check_poster($movie['posterUrl']);  ?>" alt="<?php echo $movie['title'] ?> image">
     <div class="card-body">
         <h5 class="card-title"><?php echo $movie["title"] ?></h5>
         <p class="card-text">

@@ -106,3 +106,17 @@ function save_movie_favorites($data)
     // Scrie stringuil JSON in fisier
     file_put_contents($json_file_path, $json_data);
 }
+
+
+// Function pentru verificarea posterului
+function check_poster($posterLink)
+{
+    $pathToImg = "./assets/placeholder.png";
+    $headers = @get_headers($posterLink);
+
+    if ($headers && strpos($headers[0], '200') !== false) {
+        return $posterLink;
+    } else {
+        return $pathToImg;
+    }
+}

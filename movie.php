@@ -15,13 +15,13 @@ if (!empty($_GET) && isset($_GET["movie_id"])) {
     // Verificam daca ID-ul filmului exista in fisiser
     $favorites_count = isset($favorites_data[$movie_id]) ? $favorites_data[$movie_id] : 0;
 
-    // Verificam daca exista cooki-ul "keep_fav_movies"
+    // Verificam daca exista cookie-ul "keep_fav_movies"
     $fav_movies = [];
     if (isset($_COOKIE["keep_fav_movies"])) {
         // Preluam ID-urle filmelor existente din cookie si le transformam in array
         $fav_movies = json_decode($_COOKIE["keep_fav_movies"], true);
         if (!is_array($fav_movies)) {
-            $fav_movies = []; // In caz ca exista o eroare in cooki, reinitializam array-ul
+            $fav_movies = []; // In caz ca exista o eroare in cookie, reinitializam array-ul
         }
     }
 
@@ -53,6 +53,7 @@ if (!empty($_GET) && isset($_GET["movie_id"])) {
             }
 
             // Stergem filmul din lista de favorite
+            //array_search cauta id-ul filmului curent "$movie_id" in lista de favorite "$fav_movies" si o leaga de variabila "$key"
             if (($key = array_search($movie_id, $fav_movies)) !== false) {
                 unset($fav_movies[$key]);
             }
@@ -72,6 +73,7 @@ if (!empty($_GET) && isset($_GET["movie_id"])) {
     // Schimbam textul butonului si valoarea in functie de starea filmului
     $button_text = $is_already_favorite ? "Remove from Favorite" : "Add to Favorite";
     $favorites_value = $is_already_favorite ? 0 : 1;
+    $btn_aspect = $is_already_favorite ? "btn-danger" : "btn-success";
 
     // Includem header-ul
     require_once('./includes/header.php');
@@ -92,7 +94,7 @@ if (!empty($_GET) && isset($_GET["movie_id"])) {
             <h1><?php echo $movie["title"] ?></h1>
             <form action="" method="POST">
                 <input type="hidden" name="favorite" value="<?php echo $favorites_value ?>">
-                <button class="btn btn-outline-dark" type="submit">
+                <button class="btn <?php echo $btn_aspect ?>" type="submit">
                     <?php echo $button_text ?>
                 </button>
                 <!-- Afisam numarul de adaugari la favorite -->
@@ -104,7 +106,7 @@ if (!empty($_GET) && isset($_GET["movie_id"])) {
             <div class="col-md-4 col-lg-3">
                 <img
                     class="card-img-top"
-                    src="<?php echo $movie["posterUrl"] ?>"
+                    src="<?php echo check_poster($movie['posterUrl']); ?>"
                     alt="poster for <?php echo $movie["title"] ?>" />
             </div>
             <div class="col-md-8 col-lg-9">
@@ -152,6 +154,33 @@ if (!empty($_GET) && isset($_GET["movie_id"])) {
                     ?>
                 </p>
             </div>
+
+            <h4>Review Movie</h4>
+            <form action="" method="post">
+                <input class="form-control mb-3" type="text" id="name" placeholder="name" required>
+
+                <input class="form-control" type="email" id="email" placeholder="email@example.com" required><br>
+
+                <textarea class="form-control" name="review" id="review" rows="4" cols="0" placeholder="e.g. I like this movie because..." required></textarea>
+
+                <div class="input-group mb-3 mt-3">
+                    <div class="input-group-text">
+                        <input class="form-check-input mt-0" id="accept" type="checkbox" value="Yes" aria-label="Checkbox for following text input">
+                    </div>
+                    <label for="accept" class="form-control">I agree to the processing of personal data.</label>
+                </div>
+            </form>
+
+            <?php
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                // Verificăm dacă cheia 'personal-data' există în $_POST
+                if (isset($_POST['personal-data']) && $_POST['personal-data'] == 'Yes') {
+                    echo "Your review message was sent successfully!";
+                } else {
+                    echo "You need to agree!";
+                }
+            }
+            ?>
         </div>
 
     <?php
