@@ -1,0 +1,207 @@
+/*
+Theme Name: Grigore Stefania
+Theme URI: https://wordpress.org/themes/twentyseventeen/
+Author: Grigore Stefania
+Author URI: https://stefania.org/
+Description: Aceasta este noua mea tema.
+Version: 1.0
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: grigore-stefania
+Tags: one-column, two-columns, right-sidebar, flexible-header, accessibility-ready, custom-colors, custom-header, custom-menu, custom-logo, editor-style, featured-images, footer-widgets, post-formats, rtl-language-support, sticky-post, theme-options, threaded-comments, translation-ready
+This theme, like WordPress, is licensed under the GPL.
+Use it to make something cool, have fun, and share what you've learned with others.
+*/
+
+:root {
+    /* Primary Color */
+    --lighter-gray: #f9f9f9;
+    --white: #ffffff;
+    --dark-gray: #333333;
+    --light-gray: #767676;
+
+    /* Secondary Color */
+    --hover-clr: #2c63ae;
+    --border-clr: #dfdfdf;
+
+    --fs-med: 1.4rem;
+}
+
+/**
+    Utility class
+*/
+p {
+    color: var(--light-gray);
+}
+
+a {
+    color: var(--light-gray);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover {
+    color: var(--hover-clr);
+}
+
+/**
+    END of Utility class
+*/
+
+body {
+    min-height: 100vh;
+    background-color: var(--lighter-gray);
+    font-size: var(--fs-med);
+    /* letter-spacing: 0.2em;
+    line-height: 1.5;  */
+    color: var(--dark-gray);
+}
+img {
+    display: block;
+    max-width: 100%;
+}
+
+.custom-logo {
+    width:50px; /* setează lățimea dorită */
+    height: auto; /* menține proporția imaginii */
+    max-height: 80px; /* dacă vrei o limită maximă */
+}
+
+.navbar {
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.body-container {
+    min-height: 100vh;
+    margin-top: 50px;
+    margin-bottom: 2rem; 
+    background-color: var(--white);
+    border: 1px solid var(--border-clr);
+    border-radius: 10px;
+    padding: 2rem;
+
+}
+
+.post-title, .single-post-title a {
+    font-size: 1.7rem;
+    color: var(--dark-gray);
+}
+
+.single-post-title {
+    margin-bottom: 0;
+}
+
+.entry {
+    margin-top: 2rem;
+}
+
+@media only screen and (min-width: 1200px) {
+    .post-box {
+        max-width: 400px;
+    }
+    
+}
+
+.pagination {
+    margin: 0 auto;
+    color: var(--dark-gray);
+    font-weight: 500;
+}
+
+.wp-block-search__inside-wrapper input, .wp-element-button {
+    display: block;
+    width: 100%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--bs-body-color);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: var(--bs-body-bg);
+    background-clip: padding-box;
+    border: var(--bs-border-width) solid var(--bs-border-color);
+    border-radius: var(--bs-border-radius);
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.wp-block-search__inside-wrapper input:focus {
+    color: var(--bs-body-color);
+    background-color: var(--bs-body-bg);
+    border-color: #86b7fe;
+    outline: 0;
+    box-shadow: 0 0 0 .25rem rgba(13, 110, 253, .25);
+}
+
+.wp-element-button {
+    width:auto;
+    border-color: #198754;
+    color: #198754;
+}
+
+.custom-box  {
+    font-size: var(--fs-med);
+    border-bottom: 1px solid var(--light-gray);
+    margin-right: 2rem;
+    padding: 1rem 0;
+    text-align: center;
+    transition: transform 0.3s ease, color 0.3s ease; /* Animare fluidă */
+}
+
+
+/* Efectul la hover */
+.custom-box:hover {
+    transform: scale(1.1); /* Mărește textul cu 10% */
+    color: var(--dark-gray); /* Schimbă culoarea textului (opțional) */
+    border-bottom: 3px solid red;
+}
+
+/* PRELOADER */
+.spinner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255); /* Fundal alb semi-transparent */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999; /* Asigură-te că este deasupra tuturor elementelor */
+    opacity: 1;
+    transition: opacity 0.5s ease-out;
+    pointer-events: auto; /* Permite interacțiunea */
+}
+
+.spinner.hidden {
+    opacity: 0;
+    pointer-events: none; /* Dezactivează interacțiunea */
+}
+
+.spinner::before {
+    content: "";
+    width: 40px;
+    height: 40px;
+    background-color: #333;
+    animation: sk-rotateplane 1.2s infinite ease-in-out;
+}
+  
+  @-webkit-keyframes sk-rotateplane {
+    0% { -webkit-transform: perspective(120px) }
+    50% { -webkit-transform: perspective(120px) rotateY(180deg) }
+    100% { -webkit-transform: perspective(120px) rotateY(180deg)  rotateX(180deg) }
+  }
+  
+  @keyframes sk-rotateplane {
+    0% { 
+      transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+      -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg) 
+    } 50% { 
+      transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
+      -webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg) 
+    } 100% { 
+      transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+      -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+    }
+  }

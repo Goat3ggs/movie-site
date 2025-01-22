@@ -1,0 +1,129 @@
+:root {
+    /* navbar colors */
+    --nav-bk-clr: hsl(0, 0%, 7%);
+    --nav-hover-clr: hsl(0, 0%, 28%);
+    --nav-txt-crl: hsl(60, 100%, 98%);
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+* {
+    font: inherit;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+ /* Navbar */
+
+ .nav-custom {
+    color: var(--nav-txt-crl);
+ }
+
+nav > button {
+    color: red;
+}
+
+.container {
+    /* background-color: grey; */
+    min-height: 100vh;
+}
+
+.index-title {
+    margin-top: 1rem;
+}
+
+.footer {
+    text-align: center;
+    background-color: rgb(245, 245, 245);
+    padding: 2rem 0;
+    margin-top: auto;
+}
+
+.contact-title {
+    margin: 2rem 0 0;
+    font-weight: bold;
+    font-size: 3rem;
+}
+
+.contact-text {
+    margin: 3rem 0 0.5rem;
+    font-weight: 700;
+    font-size: 1.4em;
+}
+
+input[type="text"] {
+    font-size: 1.2rem;
+}
+
+.movie-info-bold {
+    font-weight: bold;
+}
+
+.customIndent {
+    padding-left: 45px;
+}
+
+.active {
+    border: 1px solid var(--nav-hover-clr) !important;
+    color: var(--nav-txt-crl) !important;
+    border-radius: 0.375rem; 
+}
+
+
+.flex {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+#name, #email, #review {
+    width: 100%;
+    font-size: 1rem;
+}
+
+.term-msg {
+    padding-left: 30px;
+
+    font-size: 1.5rem;
+}
+
+
+.term-acc {
+    color: green;
+    position: relative;
+    padding-left: 40px !important;
+}
+
+.term-nacc {
+    color: red;
+    position: relative;
+    padding-left: 40 !important;
+}
+
+.term-acc::before, .term-nacc::before {
+    content: '';
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-left: 10px;
+}
+
+.term-acc::before {
+    background-image: url(assets/accept.png);
+}
+
+.term-nacc::before {
+    background-image: url(assets/naccept.png);
+}
